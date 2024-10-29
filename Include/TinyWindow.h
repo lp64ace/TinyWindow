@@ -1857,11 +1857,11 @@ namespace TinyWindow
          */
          void ShutDown()
          {
-            for (auto & windowIndex : windowList)
-            {
-                ShutdownWindow(windowIndex.get());
-            }
-            windowList.clear();
+            while (windowList.size()) {
+				auto &window = windowList.back();
+				ShutdownWindow(window.get());
+			}
+			windowList.clear();
 			
 	#if defined(TW_WINDOWS)
 			ResetMonitors();
