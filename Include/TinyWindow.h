@@ -1857,17 +1857,17 @@ namespace TinyWindow
          */
          void ShutDown()
          {
-    #if defined(TW_WINDOWS)
-             ResetMonitors();
-    #elif defined(TW_LINUX)
-            Linux_Shutdown();
-    #endif
-            
             for (auto & windowIndex : windowList)
             {
                 ShutdownWindow(windowIndex.get());
             }
             windowList.clear();
+			
+	#if defined(TW_WINDOWS)
+			ResetMonitors();
+	#elif defined(TW_LINUX)
+			Linux_Shutdown();
+	#endif
         }
 
         /**
@@ -2344,16 +2344,14 @@ namespace TinyWindow
                             }
                             break;
                         }
-
-                        default:
-                        {
-                            if (manager->resizeEvent != nullptr)
-                            {
-                                manager->resizeEvent(window, window->settings.resolution);
-                            }
-                            break;
-                        }
                     }
+					
+					/** Always send the resize event even if this is a MAXIMIZE or MINIMIZE in order to update the viewport! */
+					if (manager->resizeEvent != nullptr)
+					{
+						manager->resizeEvent(window, window->settings.resolution);
+					}
+					
                     break;
                 }
                 //only occurs when the window size is being dragged
