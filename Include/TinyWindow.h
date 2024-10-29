@@ -1857,6 +1857,7 @@ namespace TinyWindow
          */
          void ShutDown()
          {
+			/** This has to either be called before #Linux_Shutdown or not at all when exiting for Linux */
             while (windowList.size()) {
 				auto &window = windowList.back();
 				ShutdownWindow(window.get());
